@@ -1,0 +1,20 @@
+module com.file.filemanager {
+    requires javafx.controls;
+    requires javafx.fxml;
+
+    requires org.controlsfx.controls;
+    requires com.dlsc.formsfx;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.bootstrapfx.core;
+    requires jakarta.persistence;
+    requires java.naming;
+    requires jakarta.xml.bind;
+    requires org.hibernate.orm.core;
+    requires com.fasterxml.classmate;
+    requires net.bytebuddy;
+    requires org.hibernate.validator;
+    requires org.hibernate.commons.annotations;
+    opens com.file.filemanager to javafx.fxml, org.hibernate.orm.core;
+    opens com.file.filemanager.Models to org.hibernate.orm.core;
+    exports com.file.filemanager;
+}
