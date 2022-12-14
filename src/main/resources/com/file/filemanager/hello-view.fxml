@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.BorderPane?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.file.filemanager.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.filemanager.HelloController">
+    <top>
+        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <MenuButton mnemonicParsing="false" text="options">
+                <items>
+                    <MenuItem fx:id="newFile" onAction="#onNewFileClick" mnemonicParsing="false" text="فایل جدید" />
+                    <MenuItem fx:id="sortByYear" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />
+                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />
+                </items>
+            </MenuButton>
+        </ToolBar>
+    </top>
+    <center>
+        <TreeTableView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TreeTableColumn minWidth="150.0" text="نام" />
+                <TreeTableColumn minWidth="80.0" prefWidth="0.0" text="فرمت" />
+                <TreeTableColumn minWidth="80.0" text="سال" />
+                <TreeTableColumn minWidth="400.0" text="ادرس" />
+            </columns>
+        </TreeTableView>
+    </center>
+</BorderPane>

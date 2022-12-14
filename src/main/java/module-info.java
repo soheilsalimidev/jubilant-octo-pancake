@@ -17,4 +17,6 @@ module com.file.filemanager {
     opens com.file.filemanager to javafx.fxml, org.hibernate.orm.core;
     opens com.file.filemanager.Models to org.hibernate.orm.core;
     exports com.file.filemanager;
+    exports com.file.filemanager.Utils;
+    opens com.file.filemanager.Utils to javafx.fxml, org.hibernate.orm.core;
 }

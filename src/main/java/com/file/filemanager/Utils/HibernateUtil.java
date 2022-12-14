@@ -1,4 +1,4 @@
-package com.file.filemanager;
+package com.file.filemanager.Utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

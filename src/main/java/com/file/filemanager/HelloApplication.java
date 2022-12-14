@@ -1,6 +1,7 @@
 package com.file.filemanager;
 
 import com.file.filemanager.Models.FileModel;
+import com.file.filemanager.Utils.HibernateUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,8 +14,6 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
 
-    private static SessionFactory factory;
-
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
@@ -25,7 +24,7 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        factory = HibernateUtil.getSessionFactory();
+        SessionFactory factory = HibernateUtil.getSessionFactory();
 
         Session session = factory.openSession();
         Transaction transaction = null;
