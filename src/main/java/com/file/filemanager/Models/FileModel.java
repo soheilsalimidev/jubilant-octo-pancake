@@ -6,11 +6,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "files")
 public class FileModel {
-
-    public FileModel(String name, String format, int year) {
+    public FileModel(String name, String format, int date) {
         this.name = name;
         this.format = format;
-        this.year = year;
+        this.date = date;
     }
 
     long id;
@@ -19,7 +18,7 @@ public class FileModel {
     @Column(name = "format", length = 255, nullable = true)
     String format;
     @Column(name = "year", length = 255, nullable = true)
-    int year;
+    int date;
 
     @Id
     @GeneratedValue(generator = "increment")
@@ -48,11 +47,11 @@ public class FileModel {
         this.format = format;
     }
 
-    public int getYear() {
-        return year;
+    public int getDate() {
+        return date;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setDate(int date) {
+        this.date = date;
     }
 }
