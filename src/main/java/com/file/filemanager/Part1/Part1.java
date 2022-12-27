@@ -3,6 +3,7 @@ package com.file.filemanager.Part1;
 import com.file.filemanager.Models.FileModel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -94,5 +95,83 @@ public class Part1 {
 
     public ArrayList<FileModel> getFilesInfoList() {
         return filesInfoList;
+    }
+
+    public void printMaxHeap(String rootFolderPath) throws FileNotFoundException {
+        File rootFolder = new File(rootFolderPath);
+        for (File folder : Objects.requireNonNull(rootFolder.listFiles())) {
+            File textFolder = new File(rootFolderPath + "\\" + folder.getName() + "\\txt");
+            if (textFolder.listFiles() == null)
+                continue;
+            for (File file : Objects.requireNonNull(textFolder.listFiles())) {
+                Scanner readFile = new Scanner(file);
+                String line = readFile.nextLine();
+                ArrayList<Integer> arr = new ArrayList<>();
+                for (int i = 0; i < line.split("\\,").length; i++) {
+                    arr.add(Integer.valueOf(line.split("\\,")[i]));
+                }
+                System.out.print(file.getName() + ": ");
+                MaxHeap maxHeap = new MaxHeap(arr.size());
+                maxHeap.getArr(arr);
+                maxHeap.print();
+                System.out.println();
+            }
+        }
+    }
+
+    class Node {
+        int data = -1;
+    }
+
+    class MaxHeap {
+        private Node[] Heap;
+        private int size;
+        private int maxsize;
+
+        public MaxHeap(int maxsize) {
+            this.maxsize = maxsize;
+            this.size = 0;
+            Heap = new Node[this.maxsize];
+            for (int i = 0; i < maxsize; i++)
+                Heap[i] = new Node();
+        }
+
+        private int parent(int pos) {
+            return (pos - 1) / 2;
+        }
+
+        public void getArr(ArrayList<Integer> arr) {
+            for (int i = 0; i < arr.size(); i++) {
+                insert(arr.get(i));
+            }
+        }
+
+        public void insert(int element) {
+            Heap[size].data = element;
+            int current = size;
+            while (Heap[current].data > Heap[parent(current)].data) {
+                swap(current, parent(current));
+                current = parent(current);
+            }
+            size++;
+        }
+
+        private void swap(int fpos, int spos) {
+            Node tmp;
+            tmp = Heap[fpos];
+            Heap[fpos] = Heap[spos];
+            Heap[spos] = tmp;
+        }
+
+        public void print() {
+            int x = 1;
+            while (x < Heap.length / 2)
+                x *= 2;
+            x -= 1;
+            while (x < Heap.length) {
+                System.out.print(Heap[x].data);
+                x++;
+            }
+        }
     }
 }
