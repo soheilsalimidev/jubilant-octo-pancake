@@ -20,7 +20,7 @@ public class Part1 {
         this.rootFolderPath = rootFolderPath;
     }
 
-    public void listOfFiles(String directoryName) {
+    private void listOfFiles(String directoryName) {
         File directory = new File(directoryName);
         File[] fList = directory.listFiles();
         if (fList != null) {
@@ -35,21 +35,21 @@ public class Part1 {
         }
     }
 
-    public void takeOutFiles(String path) throws IOException {
+    public void takeOutFiles() throws IOException {
         listOfFiles(rootFolderPath);
-        File rootFile = new File(path + "root\\");
+        File rootFile = new File(rootFolderPath + "root\\");
         if (!rootFile.exists())
             rootFile.mkdir();
         for (File file : files) {
             filesInfoList.add(new FileModel(file.getName().split("\\.")[0], file.getName().split("\\.")[2], Integer.parseInt(file.getName().split("\\.")[1])));
-            Files.copy(file.toPath(), (new File(path + "root\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.toPath(), (new File(rootFolderPath + "root\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
             file.delete();
         }
         for (File dirFile : dir) {
             dirFile.delete();
         }
         for (File file : Objects.requireNonNull(rootFile.listFiles())) {
-            Files.copy(file.toPath(), (new File(path + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.toPath(), (new File(rootFolderPath + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
             file.delete();
         }
         rootFile.delete();
@@ -118,6 +118,11 @@ public class Part1 {
             }
         }
     }
+
+    public List<File> getFiles() {
+        return files;
+    }
+
 
     class Node {
         int data = -1;

@@ -5,13 +5,13 @@
         <!-- MySQL -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/file</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">Sepehr1382*</property>
+        <property name="hibernate.connection.username">soheil</property>
+        <property name="hibernate.connection.password">09103502440sS$</property>
 
         <!-- Hibernate -->
         <property name="show_sql">true</property>
         <property name="format_sql">false</property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Entities -->
         <mapping class="com.file.filemanager.Models.FileModel"/>

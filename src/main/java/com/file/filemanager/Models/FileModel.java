@@ -20,6 +20,9 @@ public class FileModel {
     @Column(name = "year", length = 255, nullable = true)
     int date;
 
+    public FileModel() {
+    }
+
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
