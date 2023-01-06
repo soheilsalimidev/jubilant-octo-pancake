@@ -17,7 +17,7 @@ public class FileModel {
     String name;
     @Column(name = "format", length = 255, nullable = true)
     String format;
-    @Column(name = "year", length = 255, nullable = true)
+    @Column(name = "date", length = 255, nullable = true)
     int date;
 
     public FileModel() {
@@ -56,5 +56,15 @@ public class FileModel {
 
     public void setDate(int date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "FileModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", format='" + format + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

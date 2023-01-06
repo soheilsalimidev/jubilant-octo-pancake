@@ -18,6 +18,7 @@ import org.hibernate.Transaction;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 public class HelloController {
@@ -81,6 +82,17 @@ public class HelloController {
         factory.close();
     }
 
+//    @FXML
+//    protected void sortOnDate() {
+//        filesInfoList.removeAll();
+//        try (Session session = factory.openSession()) {
+//            session.createNativeQuery("select * from file.files order by date desc", FileModel.class).stream().forEach(filesInfoList::add);
+//        } catch (Exception e) {
+//            System.out.println("ERROR: " + e.getMessage());
+//        }
+//        addFilesToTree();
+//    }
+
     public void hqlTruncate() {
         Session session = factory.openSession();
         Transaction transaction = null;
@@ -123,6 +135,5 @@ public class HelloController {
         });
 
         treeView.setRoot(root);
-
     }
 }

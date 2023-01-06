@@ -14,8 +14,8 @@
             <MenuButton mnemonicParsing="false" text="options">
                 <items>
                     <MenuItem fx:id="newFile" onAction="#onNewFileClick" mnemonicParsing="false" text="فایل جدید" />
-                    <MenuItem fx:id="sortByYear" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />
-                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />
+<!--                    <MenuItem fx:id="sortByYear" onAction="#sortOnDate" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />-->
+<!--                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />-->
                 </items>
             </MenuButton>
         </ToolBar>
