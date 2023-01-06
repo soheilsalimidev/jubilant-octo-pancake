@@ -14,6 +14,7 @@ module com.file.filemanager {
     requires net.bytebuddy;
     requires org.hibernate.validator;
     requires org.hibernate.commons.annotations;
+    requires java.desktop;
     opens com.file.filemanager to javafx.fxml, org.hibernate.orm.core;
     opens com.file.filemanager.Models;
     exports com.file.filemanager;
