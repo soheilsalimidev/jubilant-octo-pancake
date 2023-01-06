@@ -151,7 +151,7 @@ class generaltree<E> extends AbstractTree{
             q2.poll();
         }
     }
-    public void printqueue(){
+    /*public void printqueue(){
         while(q.size()!=0){
             if(q.peek().parent == null){
                 System.out.print(q.peek().element+" ** "+"null ");
@@ -164,7 +164,7 @@ class generaltree<E> extends AbstractTree{
             q.poll();
             System.out.println();
         }
-    }
+    }*/
     public static ArrayList <String> listoffolder (String addres){
         File file = new File(addres);
         ArrayList <String> list = new ArrayList<>();
@@ -184,17 +184,85 @@ class generaltree<E> extends AbstractTree{
             System.out.print(n.element+" ");
         }
     }
-}
-    public class faz3 {
-        public static void main(String[] args) {
-            //daryaft addres folder asli
-            System.out.println("in the name of god");
-            generaltree z = new generaltree();
-            ArrayList x = new ArrayList<>();
-            x.add("Folder");
-            String adresasli = "C:/Folder";
-            z.insertValue(x,z,adresasli);
-            z.sakht_derakht(z);
-            z.printqueue();
+    public void serch_chap(String name) {
+        int p =0 ;
+        Node<E> n = q.peek();
+        while (q.size() != 0 && p ==0 ) {
+            n = (Node<E>) q.poll();
+
+            String elemnt = (String) n.element;
+            if (elemnt.compareTo(name) == 0) {
+                p++;
+            }
+        }
+        if(p==0){
+            System.out.println("this file is not exist !!");
+        }
+        else{
+            System.out.println("* Preorder :");
+            preOrder(n);
+            System.out.println();
+            System.out.println("* PostOrder :");
+            postorder(n);
+            System.out.println();
+            System.out.println("* InOrder :");
+            inorder(n);
+        }
+
+    }
+    public static void preOrder(Node n){
+        if (n == null) {
+            return;
+        }
+        System.out.printf(n.element+" ");
+        for(int t=0 ; t<n.child.size() ; t++){
+            preOrder((Node) n.child.get(t));
+        }
+
+    }
+    public static void postorder(Node n){
+        if (n == null)
+            return;
+        if(n.child.size() == 2){
+            postorder((Node) n.child.get(0));
+            postorder((Node) n.child.get(1));
+        }
+        else{
+            for(int t=0 ; t<n.child.size() ; t++) {
+                postorder((Node) n.child.get(t));
+            }
+        }
+        System.out.print(n.element + " ");
+    }
+    public static void inorder(Node n){
+        if (n == null)
+            return;
+        if(n.child.size() == 2){
+            inorder((Node) n.child.get(0));
+            System.out.print(n.element + " ");
+            inorder((Node) n.child.get(1));
+        }
+        else {
+            for(int t=0 ; t<n.child.size() ; t++) {
+                inorder((Node) n.child.get(t));
+            }
+            System.out.print(n.element + " ");
         }
     }
+}
+public class faz3 {
+    public static void main(String[] args) {
+        //daryaft addres folder asli
+        System.out.println("in the name of god");
+        generaltree z = new generaltree();
+        ArrayList x = new ArrayList<>();
+        x.add("Folder");
+        String adresasli = "C:/Folder";
+        z.insertValue(x,z,adresasli);
+        z.sakht_derakht(z);
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.next();
+        generaltree z2 = new generaltree();
+        z.serch_chap(name);
+    }
+}
