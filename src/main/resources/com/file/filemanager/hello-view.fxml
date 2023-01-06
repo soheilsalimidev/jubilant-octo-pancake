@@ -14,7 +14,8 @@
             <MenuButton mnemonicParsing="false" text="options">
                 <items>
                     <MenuItem fx:id="newFile" onAction="#onNewFileClick" mnemonicParsing="false" text="فایل جدید" />
-<!--                    <MenuItem fx:id="sortByYear" onAction="#sortOnDate" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />-->
+                    <MenuItem fx:id="removeFile" onAction="#onDeleteFileClick" mnemonicParsing="false" text="حذف فایل" />
+                    <!--                    <MenuItem fx:id="sortByYear" onAction="#sortOnDate" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />-->
 <!--                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />-->
                 </items>
             </MenuButton>

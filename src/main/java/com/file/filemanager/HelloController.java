@@ -25,17 +25,19 @@ public class HelloController {
     String rootPath = "";
     @FXML
     private MenuItem newFile;
-    @FXML
-    private MenuItem sortByYear;
-    @FXML
-    private MenuItem sortByFormat;
+    //    @FXML
+//    private MenuItem sortByYear;
+//    @FXML
+//    private MenuItem removeFile;
     @FXML
     private TreeTableView<FileModel> treeView;
     SessionFactory factory = HibernateUtil.getSessionFactory();
+    Part1 part1;
 
     private final ObservableList<FileModel> filesInfoList = FXCollections.observableArrayList();
 
     public void initialize() {
+        part1 = new Part1(rootPath);
         filesInfoList.addAll(getAllFiles());
         addFilesToTree();
     }
@@ -49,7 +51,6 @@ public class HelloController {
         if (file != null)
             try {
                 rootPath = Util.extractFolder(file.getPath(), file.getParent() + "//root//");
-                Part1 part1 = new Part1(rootPath);
                 part1.takeOutFiles();
                 hqlTruncate();
                 saveFilesInfoInDatabase(part1.getFilesInfoList());
@@ -60,6 +61,29 @@ public class HelloController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+    }
+
+    @FXML
+    protected void onDeleteFileClick() {
+        TreeItem<FileModel> c = treeView.getSelectionModel().getSelectedItem();
+        c.getParent().getChildren().remove(c);
+        filesInfoList.remove(c.getValue());
+        part1.removeFile(c.getValue().getName());
+        Session session = factory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.remove(c.getValue());
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.out.println("ERROR: " + e.getMessage());
+        } finally {
+            session.close();
+        }
+        System.out.println("Remove");
     }
 
     private void saveFilesInfoInDatabase(List<FileModel> files) {
