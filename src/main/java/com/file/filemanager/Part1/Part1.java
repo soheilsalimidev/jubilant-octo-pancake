@@ -56,9 +56,10 @@ public class Part1 {
     }
 
     public void addFile(String name, String date, String format) throws IOException {
-        files.add(new File(rootFolderPath + name + "." + date + "." + format));
+        File e = new File(rootFolderPath + name + "." + date + "." + format);
+        files.add(e);
         filesInfoList.add(new FileModel(name, format, Integer.parseInt(date)));
-        new File(rootFolderPath + name + "." + date + "." + format).createNewFile();
+        e.createNewFile();
     }
 
     public void removeFile(String name) {
@@ -80,18 +81,18 @@ public class Part1 {
      * public static Comparator<FileModel> sortByDate = (FileModel a, FileModel b) -> b.getdate() - a.getdate();
      * public static Comparator<FileModel> sortByFormat = Comparator.comparing(FileModel::getFormat);
      */
-    public void groupFile(String path) throws IOException {
-        for (File file : files) {
-            File x = new File(path + file.getName().split("\\.")[1] + "\\");
-            if (!x.exists()) x.mkdirs();
-            File y = new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\");
-            if (!y.exists()) y.mkdirs();
-            String newPath = path + file.getName();
-            Files.copy(Paths.get(newPath), (new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
-            File newFile = new File(newPath);
-            newFile.delete();
-        }
-    }
+//    public void groupFile(String path) throws IOException {
+//        for (File file : files) {
+//            File x = new File(path + file.getName().split("\\.")[1] + "\\");
+//            if (!x.exists()) x.mkdirs();
+//            File y = new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\");
+//            if (!y.exists()) y.mkdirs();
+//            String newPath = path + file.getName();
+//            Files.copy(Paths.get(newPath), (new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
+//            File newFile = new File(newPath);
+//            newFile.delete();
+//        }
+//    }
 
     public ArrayList<FileModel> getFilesInfoList() {
         return filesInfoList;
