@@ -55,9 +55,12 @@ public class HelloController {
         File file = fileChooser.showOpenDialog(newFile.getParentPopup().getOwnerWindow());
         if (file != null) try {
             rootPath = Util.extractFolder(file.getPath(), file.getParent() + "//root//");
+            part1 = new Part1(rootPath);
             part1.takeOutFiles();
             hqlTruncate();
             saveFilesInfoInDatabase(part1.getFilesInfoList());
+            treeView.setRoot(null);
+            treeView.refresh();
             filesInfoList.removeAll();
             filesInfoList.addAll(part1.getFilesInfoList());
             addFilesToTree();
@@ -186,10 +189,9 @@ public class HelloController {
     public void hqlTruncate() {
         Session session = factory.openSession();
         Transaction transaction = null;
-
         try {
             transaction = session.beginTransaction();
-            session.createNativeQuery("delete from file.files", FileModel.class);
+            session.createNativeQuery("delete from file.files where 1", FileModel.class).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -199,6 +201,7 @@ public class HelloController {
         } finally {
             session.close();
         }
+        System.out.println("Remove");
     }
 
     public List<FileModel> getAllFiles() {
@@ -216,6 +219,12 @@ public class HelloController {
 
         filesInfoList.forEach(file -> root.getChildren().add(new TreeItem<>(file)));
         filesInfoList.addListener((ListChangeListener<FileModel>) c -> {
+            if (treeView.getRoot() == null) {
+                TreeItem<FileModel> newRoot = new TreeItem<>(new FileModel("root", "dir", 0));
+                root.setExpanded(true);
+                treeView.setRoot(newRoot);
+            }
+
             while (c.next()) {
                 if (c.wasAdded()) {
                     for (FileModel element : c.getAddedSubList()) {
