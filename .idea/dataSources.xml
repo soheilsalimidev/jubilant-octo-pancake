@@ -19,5 +19,16 @@ C:/Users/Arthur/Desktop/fileManager/src/main/resources/hibernate.cfg.xml</remark
       <jdbc-url>jdbc:mysql://localhost:3306/file</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="src:main:resources:hibernate.cfg.xml/Hibernate" uuid="4b44fd1b-38e3-45af-9e14-9fb6b56c1c03">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+C:/Users/Arthur/Desktop/jubilant-octo-pancake/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/file</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
