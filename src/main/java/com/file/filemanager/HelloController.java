@@ -4,13 +4,17 @@ import com.file.filemanager.Models.FileModel;
 import com.file.filemanager.Part1.Part1;
 import com.file.filemanager.Utils.HibernateUtil;
 import com.file.filemanager.Utils.Util;
+import com.file.filemanager.part3.Faz3;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.util.converter.IntegerStringConverter;
 import org.hibernate.Session;
@@ -28,6 +32,7 @@ import java.util.function.UnaryOperator;
 
 public class HelloController {
     String rootPath = "";
+    String rootUnChangedPath = "";
     @FXML
     private MenuItem newFile;
     //    @FXML
@@ -54,6 +59,7 @@ public class HelloController {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(newFile.getParentPopup().getOwnerWindow());
         if (file != null) try {
+            rootUnChangedPath = Util.extractFolder(file.getPath(), file.getParent() + "//rootUnChanged//");
             rootPath = Util.extractFolder(file.getPath(), file.getParent() + "//root//");
             part1 = new Part1(rootPath);
             part1.takeOutFiles();
@@ -236,5 +242,61 @@ public class HelloController {
         });
 
         treeView.setRoot(root);
+    }
+
+    public void onTreeShow() {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("درخت");
+        dialog.setHeaderText("اسم فولدر را وارد کنید");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextField nameField = new TextField("root");
+
+        dialogPane.setContent(new VBox(8, nameField));
+        Platform.runLater(nameField::requestFocus);
+
+        dialog.setResultConverter((ButtonType button) -> {
+            if (button == ButtonType.OK) {
+                return nameField.getText();
+            }
+            return null;
+        });
+
+        Optional<String> optionalResult = dialog.showAndWait();
+        optionalResult.ifPresent((String results) -> {
+            Faz3 faz3 = new Faz3(rootUnChangedPath, results);
+
+            Dialog<String> alert = new Dialog<>();
+            alert.setTitle("درخت");
+            alert.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            TextFlow flow = new TextFlow();
+
+            Text text1 = new Text("pre Order \n");
+            text1.setStyle("-fx-font-weight: bold");
+
+            Text text2 = new Text(faz3.getPreOrder());
+            text2.setStyle("-fx-font-weight: regular");
+
+            Text text3 = new Text("\nin Order \n");
+            text1.setStyle("-fx-font-weight: bold");
+
+            Text text4 = new Text(faz3.getInOrder());
+            text2.setStyle("-fx-font-weight: regular");
+
+            Text text5 = new Text("\npost Order \n");
+            text1.setStyle("-fx-font-weight: bold");
+
+            Text text6 = new Text(faz3.getPostOrder());
+            text2.setStyle("-fx-font-weight: regular");
+
+
+            flow.getChildren().addAll(text1, text2, text3, text4, text5,
+                    text6);
+
+            alert.getDialogPane().setContent(flow);
+            alert.setResultConverter((ButtonType button) -> null);
+            alert.showAndWait();
+
+        });
     }
 }

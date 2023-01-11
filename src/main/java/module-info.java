@@ -17,6 +17,7 @@ module com.file.filemanager {
     requires java.desktop;
     opens com.file.filemanager to javafx.fxml, org.hibernate.orm.core;
     opens com.file.filemanager.Models;
+    opens com.file.filemanager.part3;
     exports com.file.filemanager;
     exports com.file.filemanager.Utils;
     opens com.file.filemanager.Utils to javafx.fxml, org.hibernate.orm.core;
