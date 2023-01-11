@@ -7,14 +7,17 @@
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.filemanager.HelloController">
+<?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500" minWidth="1000" prefHeight="511.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.filemanager.HelloController">
     <top>
         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <MenuButton mnemonicParsing="false" text="options">
                 <items>
+                    <MenuItem fx:id="newZip" onAction="#onNewZipFileClick" mnemonicParsing="false" text="زیپ جدید" />
                     <MenuItem fx:id="newFile" onAction="#onNewFileClick" mnemonicParsing="false" text="فایل جدید" />
-                    <MenuItem fx:id="sortByYear" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />
-                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />
+                    <MenuItem fx:id="removeFile" onAction="#onDeleteFileClick" mnemonicParsing="false" text="حذف فایل" />
+                    <!--                    <MenuItem fx:id="sortByYear" onAction="#sortOnDate" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />-->
+<!--                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />-->
                 </items>
             </MenuButton>
         </ToolBar>
@@ -22,10 +25,21 @@
     <center>
         <TreeTableView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TreeTableColumn minWidth="150.0" text="نام" />
-                <TreeTableColumn minWidth="80.0" prefWidth="0.0" text="فرمت" />
-                <TreeTableColumn minWidth="80.0" text="سال" />
-                <TreeTableColumn minWidth="400.0" text="ادرس" />
+                <TreeTableColumn minWidth="150.0" text="نام" >
+                    <cellValueFactory>
+                        <TreeItemPropertyValueFactory property="name"/>
+                    </cellValueFactory>
+                </TreeTableColumn>
+                <TreeTableColumn minWidth="80.0" prefWidth="0.0" text="فرمت" >
+                    <cellValueFactory>
+                        <TreeItemPropertyValueFactory property="format"/>
+                    </cellValueFactory>
+                </TreeTableColumn>
+                <TreeTableColumn minWidth="80.0" text="سال" >
+                    <cellValueFactory>
+                        <TreeItemPropertyValueFactory property="date"/>
+                    </cellValueFactory>
+                </TreeTableColumn>
             </columns>
         </TreeTableView>
     </center>
