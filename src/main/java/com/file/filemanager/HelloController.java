@@ -22,6 +22,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -158,7 +159,7 @@ public class HelloController {
             session.close();
         }
 
-       // factory.close();
+        // factory.close();
     }
 
     private void saveFilesInfoInDatabase(List<FileModel> files) {
@@ -178,7 +179,7 @@ public class HelloController {
             session.close();
         }
 
-       // factory.close();
+        // factory.close();
     }
 
 //    @FXML
@@ -298,5 +299,33 @@ public class HelloController {
             alert.showAndWait();
 
         });
+    }
+
+    public void onHeapShow(ActionEvent actionEvent) {
+
+        Dialog<String> alert = new Dialog<>();
+        alert.setTitle("درخت");
+        alert.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        TextFlow flow = new TextFlow();
+
+        Text text1 = new Text("Heap max \n");
+        text1.setStyle("-fx-font-weight: bold");
+        Part1 part1 = new Part1(rootUnChangedPath);
+        Text text2 = null;
+        try {
+            //System.out.println(part1.printMaxHeap());
+            text2 = new Text(part1.printMaxHeap());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+//        text2.setStyle("-fx-font-weight: ");
+
+
+        flow.getChildren().addAll(text1, text2);
+
+        alert.getDialogPane().setContent(flow);
+        alert.setResultConverter((ButtonType button) -> null);
+        alert.showAndWait();
+
     }
 }

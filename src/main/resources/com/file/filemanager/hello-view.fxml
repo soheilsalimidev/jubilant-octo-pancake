@@ -18,6 +18,7 @@
                     <MenuItem fx:id="removeFile" onAction="#onDeleteFileClick" mnemonicParsing="false" text="حذف فایل" />
                     <MenuItem fx:id="tree" onAction="#onTreeShow" mnemonicParsing="false" text="درخت" />
                     <!--                    <MenuItem fx:id="sortByYear" onAction="#sortOnDate" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />-->
+                    <MenuItem  onAction="#onHeapShow" mnemonicParsing="false" text="max heap" />
 <!--                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />-->
                 </items>
             </MenuButton>

@@ -38,8 +38,7 @@ public class Part1 {
     public void takeOutFiles() throws IOException {
         listOfFiles(rootFolderPath);
         File rootFile = new File(rootFolderPath + "root\\");
-        if (!rootFile.exists())
-            rootFile.mkdir();
+        if (!rootFile.exists()) rootFile.mkdir();
         for (File file : files) {
             filesInfoList.add(new FileModel(file.getName().split("\\.")[0], file.getName().split("\\.")[2], Integer.parseInt(file.getName().split("\\.")[1])));
             Files.copy(file.toPath(), (new File(rootFolderPath + "root\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -72,8 +71,7 @@ public class Part1 {
                 break;
             }
         }
-        if (x != -1)
-            files.remove(x);
+        if (x != -1) files.remove(x);
     }
 
     /**
@@ -81,28 +79,28 @@ public class Part1 {
      * public static Comparator<FileModel> sortByDate = (FileModel a, FileModel b) -> b.getdate() - a.getdate();
      * public static Comparator<FileModel> sortByFormat = Comparator.comparing(FileModel::getFormat);
      */
-//    public void groupFile(String path) throws IOException {
-//        for (File file : files) {
-//            File x = new File(path + file.getName().split("\\.")[1] + "\\");
-//            if (!x.exists()) x.mkdirs();
-//            File y = new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\");
-//            if (!y.exists()) y.mkdirs();
-//            String newPath = path + file.getName();
-//            Files.copy(Paths.get(newPath), (new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
-//            File newFile = new File(newPath);
-//            newFile.delete();
-//        }
-//    }
+    public void groupFile(String path) throws IOException {
+        for (File file : files) {
+            File x = new File(path + file.getName().split("\\.")[1] + "\\");
+            if (!x.exists()) x.mkdirs();
+            File y = new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\");
+            if (!y.exists()) y.mkdirs();
+            String newPath = path + file.getName();
+            Files.copy(Paths.get(newPath), (new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            File newFile = new File(newPath);
+            newFile.delete();
+        }
+    }
     public ArrayList<FileModel> getFilesInfoList() {
         return filesInfoList;
     }
 
-    public void printMaxHeap(String rootFolderPath) throws FileNotFoundException {
-        File rootFolder = new File(rootFolderPath);
+    public String printMaxHeap() throws FileNotFoundException {
+        File rootFolder = new File("C:\\Users\\Arthur\\Desktop\\rootUnChanged\\main");
+        StringBuilder stringBuilder = new StringBuilder();
         for (File folder : Objects.requireNonNull(rootFolder.listFiles())) {
             File textFolder = new File(rootFolderPath + "\\" + folder.getName() + "\\txt");
-            if (textFolder.listFiles() == null)
-                continue;
+            if (textFolder.listFiles() == null) continue;
             for (File file : Objects.requireNonNull(textFolder.listFiles())) {
                 Scanner readFile = new Scanner(file);
                 String line = readFile.nextLine();
@@ -110,13 +108,15 @@ public class Part1 {
                 for (int i = 0; i < line.split("\\,").length; i++) {
                     arr.add(Integer.valueOf(line.split("\\,")[i]));
                 }
-                System.out.print(file.getName() + ": ");
+//                System.out.print(file.getName() + ": ");
+                stringBuilder.append(file.getName()).append(": ");
                 MaxHeap maxHeap = new MaxHeap(arr.size());
                 maxHeap.getArr(arr);
-                maxHeap.print();
-                System.out.println();
+                stringBuilder.append(maxHeap.print()).append("\n");
+//                System.out.println();
             }
         }
+        return stringBuilder.toString();
     }
 
     public List<File> getFiles() {
@@ -168,15 +168,17 @@ public class Part1 {
             Heap[spos] = tmp;
         }
 
-        public void print() {
+        public String print() {
+            StringBuilder stringBuilder = new StringBuilder();
             int x = 1;
-            while (x < Heap.length / 2)
-                x *= 2;
+            while (x < Heap.length / 2) x *= 2;
             x -= 1;
             while (x < Heap.length) {
-                System.out.print(Heap[x].data);
+//                System.out.print(Heap[x].data);
+                stringBuilder.append(Heap[x].data);
                 x++;
             }
+            return stringBuilder.toString();
         }
     }
 }
