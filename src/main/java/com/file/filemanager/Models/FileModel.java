@@ -3,13 +3,30 @@ package com.file.filemanager.Models;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.io.File;
+
 @Entity
 @Table(name = "files")
 public class FileModel {
+    public FileModel(String name, String format, int date, File path) {
+        this.name = name;
+        this.format = format;
+        this.date = date;
+        this.path = path;
+    }
+
     public FileModel(String name, String format, int date) {
         this.name = name;
         this.format = format;
         this.date = date;
+    }
+
+    public void setPath(File path) {
+        this.path = path;
+    }
+
+    public File getPath() {
+        return path;
     }
 
     long id;
@@ -19,6 +36,7 @@ public class FileModel {
     String format;
     @Column(name = "date", length = 255, nullable = true)
     int date;
+    File path;
 
     public FileModel() {
     }

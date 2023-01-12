@@ -2,47 +2,62 @@
 
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.control.TreeTableView?>
-<?import javafx.scene.layout.BorderPane?>
-
 <?import javafx.scene.control.cell.TreeItemPropertyValueFactory?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500" minWidth="1000" prefHeight="511.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.filemanager.HelloController">
-    <top>
-        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <MenuButton mnemonicParsing="false" text="options">
-                <items>
-                    <MenuItem fx:id="newZip" onAction="#onNewZipFileClick" mnemonicParsing="false" text="زیپ جدید" />
-                    <MenuItem fx:id="newFile" onAction="#onNewFileClick" mnemonicParsing="false" text="فایل جدید" />
-                    <MenuItem fx:id="removeFile" onAction="#onDeleteFileClick" mnemonicParsing="false" text="حذف فایل" />
-                    <MenuItem fx:id="tree" onAction="#onTreeShow" mnemonicParsing="false" text="درخت" />
-                    <!--                    <MenuItem fx:id="sortByYear" onAction="#sortOnDate" mnemonicParsing="false" text="مرتب کردن بر اساس تاریخ" />-->
-                    <MenuItem  onAction="#onHeapShow" mnemonicParsing="false" text="max heap" />
-<!--                    <MenuItem fx:id="sortByFormat" mnemonicParsing="false" text="مرتب کردن بر اساس فرمت" />-->
-                </items>
-            </MenuButton>
-        </ToolBar>
-    </top>
-    <center>
-        <TreeTableView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <columns>
-                <TreeTableColumn minWidth="150.0" text="نام" >
-                    <cellValueFactory>
-                        <TreeItemPropertyValueFactory property="name"/>
-                    </cellValueFactory>
-                </TreeTableColumn>
-                <TreeTableColumn minWidth="80.0" prefWidth="0.0" text="فرمت" >
-                    <cellValueFactory>
-                        <TreeItemPropertyValueFactory property="format"/>
-                    </cellValueFactory>
-                </TreeTableColumn>
-                <TreeTableColumn minWidth="80.0" text="سال" >
-                    <cellValueFactory>
-                        <TreeItemPropertyValueFactory property="date"/>
-                    </cellValueFactory>
-                </TreeTableColumn>
-            </columns>
-        </TreeTableView>
-    </center>
-</BorderPane>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+
+
+<StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.file.filemanager.HelloController">
+    <children>
+        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500" minWidth="1000" prefHeight="511.0"
+                    prefWidth="713.0">
+            <top>
+                <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <MenuButton mnemonicParsing="false" text="part 1,3">
+                        <items>
+                            <MenuItem fx:id="newZip" mnemonicParsing="false" onAction="#onNewZipFileClick"
+                                      text="زیپ جدید"/>
+                            <MenuItem fx:id="newFile" mnemonicParsing="false" onAction="#onNewFileClick"
+                                      text="فایل جدید"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onDeleteFileClick" text="حذف فایل"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onTreeShow" text="درخت"/>
+                        </items>
+                    </MenuButton>
+                    <MenuButton mnemonicParsing="false" text="part 2,4">
+                        <items>
+                            <MenuItem mnemonicParsing="false" onAction="#onSortFolders" text="پوشه بندی"/>
+                            <MenuItem mnemonicParsing="false" onAction="#onHeapShow" text="max heap"/>
+                        </items>
+                    </MenuButton>
+                </ToolBar>
+            </top>
+            <center>
+                <TreeTableView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <columns>
+                        <TreeTableColumn minWidth="150.0" text="نام">
+                            <cellValueFactory>
+                                <TreeItemPropertyValueFactory property="name"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                        <TreeTableColumn minWidth="80.0" prefWidth="0.0" text="فرمت">
+                            <cellValueFactory>
+                                <TreeItemPropertyValueFactory property="format"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                        <TreeTableColumn minWidth="80.0" text="سال">
+                            <cellValueFactory>
+                                <TreeItemPropertyValueFactory property="date"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                    </columns>
+                </TreeTableView>
+            </center>
+        </BorderPane>
+        <ProgressIndicator fx:id="progress"/>
+    </children>
+</StackPane>

@@ -12,8 +12,8 @@ import java.util.*;
 
 public class Part1 {
     private final String rootFolderPath;
-    private final List<File> files = new ArrayList<>();
-    private final List<File> dir = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
+    private List<File> dir = new ArrayList<>();
     private final ArrayList<FileModel> filesInfoList = new ArrayList<>();
 
     public Part1(String rootFolderPath) {
@@ -36,6 +36,8 @@ public class Part1 {
     }
 
     public void takeOutFiles() throws IOException {
+        dir = new ArrayList<>();
+        files = new ArrayList<>();
         listOfFiles(rootFolderPath);
         File rootFile = new File(rootFolderPath + "root\\");
         if (!rootFile.exists()) rootFile.mkdir();
@@ -86,17 +88,19 @@ public class Part1 {
             File y = new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\");
             if (!y.exists()) y.mkdirs();
             String newPath = path + file.getName();
+            if (!(new File(newPath)).exists()) continue;
             Files.copy(Paths.get(newPath), (new File(path + file.getName().split("\\.")[1] + "\\" + file.getName().split("\\.")[2] + "\\" + file.getName())).toPath(), StandardCopyOption.REPLACE_EXISTING);
             File newFile = new File(newPath);
             newFile.delete();
         }
     }
+
     public ArrayList<FileModel> getFilesInfoList() {
         return filesInfoList;
     }
 
     public String printMaxHeap() throws FileNotFoundException {
-        File rootFolder = new File("C:\\Users\\Arthur\\Desktop\\rootUnChanged\\main");
+        File rootFolder = new File(rootFolderPath);
         StringBuilder stringBuilder = new StringBuilder();
         for (File folder : Objects.requireNonNull(rootFolder.listFiles())) {
             File textFolder = new File(rootFolderPath + "\\" + folder.getName() + "\\txt");

@@ -24,14 +24,19 @@ import org.hibernate.Transaction;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 public class HelloController {
+    @FXML
+    public ProgressIndicator progress;
     String rootPath = "";
     String rootUnChangedPath = "";
     @FXML
@@ -45,9 +50,11 @@ public class HelloController {
     SessionFactory factory = HibernateUtil.getSessionFactory();
     Part1 part1;
 
+    int state = 0;
     private final ObservableList<FileModel> filesInfoList = FXCollections.observableArrayList();
 
     public void initialize() {
+        progress.setVisible(false);
         part1 = new Part1(rootPath);
         filesInfoList.addAll(getAllFiles());
         addFilesToTree();
@@ -71,7 +78,7 @@ public class HelloController {
             filesInfoList.removeAll();
             filesInfoList.addAll(part1.getFilesInfoList());
             addFilesToTree();
-
+            state = 1;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -79,6 +86,7 @@ public class HelloController {
 
     @FXML
     protected void onNewFileClick() {
+        checkTheState(1);
         Dialog<FileModel> dialog = new Dialog<>();
         dialog.setTitle("فایل جدید");
         dialog.setHeaderText("اطلاعات فایل خود را وارد کنید ؟");
@@ -121,6 +129,7 @@ public class HelloController {
 
     @FXML
     protected void onDeleteFileClick() {
+        checkTheState(1);
         TreeItem<FileModel> c = treeView.getSelectionModel().getSelectedItem();
         c.getParent().getChildren().remove(c);
         filesInfoList.remove(c.getValue());
@@ -182,16 +191,6 @@ public class HelloController {
         // factory.close();
     }
 
-//    @FXML
-//    protected void sortOnDate() {
-//        filesInfoList.removeAll();
-//        try (Session session = factory.openSession()) {
-//            session.createNativeQuery("select * from file.files order by date desc", FileModel.class).stream().forEach(filesInfoList::add);
-//        } catch (Exception e) {
-//            System.out.println("ERROR: " + e.getMessage());
-//        }
-//        addFilesToTree();
-//    }
 
     public void hqlTruncate() {
         Session session = factory.openSession();
@@ -221,31 +220,53 @@ public class HelloController {
     }
 
     void addFilesToTree() {
-        TreeItem<FileModel> root = new TreeItem<>(new FileModel("root", "dir", 0));
-        root.setExpanded(true);
+        if (state == 2)
+            findFiles(new FileModel("root", "dir", 0, new File(rootPath)), null);
+        else {
+            TreeItem<FileModel> root = new TreeItem<>(new FileModel("root", "dir", 0));
+            root.setExpanded(true);
+            filesInfoList.forEach(file -> root.getChildren().add(new TreeItem<>(file)));
+            filesInfoList.addListener((ListChangeListener<FileModel>) c -> {
+                if (treeView.getRoot() == null) {
+                    TreeItem<FileModel> newRoot = new TreeItem<>(new FileModel("root", "dir", 0));
+                    root.setExpanded(true);
+                    treeView.setRoot(newRoot);
+                }
 
-        filesInfoList.forEach(file -> root.getChildren().add(new TreeItem<>(file)));
-        filesInfoList.addListener((ListChangeListener<FileModel>) c -> {
-            if (treeView.getRoot() == null) {
-                TreeItem<FileModel> newRoot = new TreeItem<>(new FileModel("root", "dir", 0));
-                root.setExpanded(true);
-                treeView.setRoot(newRoot);
-            }
-
-            while (c.next()) {
-                if (c.wasAdded()) {
-                    for (FileModel element : c.getAddedSubList()) {
-                        TreeItem<FileModel> temp = new TreeItem<>(element);
-                        treeView.getRoot().getChildren().add(temp);
+                while (c.next()) {
+                    if (c.wasAdded()) {
+                        for (FileModel element : c.getAddedSubList()) {
+                            TreeItem<FileModel> temp = new TreeItem<>(element);
+                            treeView.getRoot().getChildren().add(temp);
+                        }
                     }
                 }
-            }
-        });
+            });
+            treeView.setRoot(root);
+        }
+    }
 
-        treeView.setRoot(root);
+    private void findFiles(FileModel dir, TreeItem<FileModel> parent) {
+        TreeItem<FileModel> root = new TreeItem<>(new FileModel(dir.getName(), "dir", 0));
+        root.setExpanded(true);
+        File[] files = dir.getPath().listFiles();
+        assert files != null;
+        for (File file : files) {
+            if (file.isDirectory())
+                findFiles(new FileModel(file.getName(), "dir", 0, file), root);
+            else
+                root.getChildren().add(new TreeItem<>(new FileModel(file.getName().split("\\.")[0], file.getName().split("\\.")[2], Integer.parseInt(file.getName().split("\\.")[1]))));
+
+        }
+        if (parent == null) {
+            treeView.setRoot(root);
+        } else {
+            parent.getChildren().add(root);
+        }
     }
 
     public void onTreeShow() {
+        checkTheState(1);
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("درخت");
         dialog.setHeaderText("اسم فولدر را وارد کنید");
@@ -301,8 +322,9 @@ public class HelloController {
         });
     }
 
-    public void onHeapShow(ActionEvent actionEvent) {
+    public void onHeapShow() {
 
+        checkTheState(2);
         Dialog<String> alert = new Dialog<>();
         alert.setTitle("درخت");
         alert.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -310,7 +332,6 @@ public class HelloController {
 
         Text text1 = new Text("Heap max \n");
         text1.setStyle("-fx-font-weight: bold");
-        Part1 part1 = new Part1(rootUnChangedPath);
         Text text2 = null;
         try {
             //System.out.println(part1.printMaxHeap());
@@ -327,5 +348,51 @@ public class HelloController {
         alert.setResultConverter((ButtonType button) -> null);
         alert.showAndWait();
 
+    }
+
+    public void onSortFolders() {
+        if (Objects.equals(rootPath, "")) onNewZipFileClick();
+        progress.setVisible(true);
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Platform.runLater(() -> {
+                try {
+                    part1.groupFile(rootPath);
+                    progress.setVisible(false);
+                    treeView.getRoot().getChildren().clear();
+                    treeView.setRoot(null);
+                    addFilesToTree();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }).start();
+        state = 2;
+
+    }
+
+
+    public void checkTheState(int requiredState) {
+        if (Objects.equals(rootPath, "")) onNewZipFileClick();
+        if (state == requiredState) return;
+        else if (requiredState == 1)
+            try {
+                progress.setVisible(true);
+                part1.takeOutFiles();
+                treeView.getRoot().getChildren().clear();
+                treeView.setRoot(null);
+                addFilesToTree();
+                progress.setVisible(false);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        else
+            onSortFolders();
+        state = requiredState;
     }
 }
