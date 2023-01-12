@@ -56,7 +56,7 @@ public class Part1 {
     }
 
     public void addFile(String name, String date, String format) throws IOException {
-        File e = new File(rootFolderPath + name + "." + date + "." + format);
+        File e = new File(rootFolderPath + "//" + name + "." + date + "." + format);
         files.add(e);
         filesInfoList.add(new FileModel(name, format, Integer.parseInt(date)));
         e.createNewFile();
@@ -93,7 +93,6 @@ public class Part1 {
 //            newFile.delete();
 //        }
 //    }
-
     public ArrayList<FileModel> getFilesInfoList() {
         return filesInfoList;
     }
