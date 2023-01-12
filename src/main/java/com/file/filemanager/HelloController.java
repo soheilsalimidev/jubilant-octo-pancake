@@ -158,7 +158,7 @@ public class HelloController {
             session.close();
         }
 
-        factory.close();
+       // factory.close();
     }
 
     private void saveFilesInfoInDatabase(List<FileModel> files) {
@@ -178,7 +178,7 @@ public class HelloController {
             session.close();
         }
 
-        factory.close();
+       // factory.close();
     }
 
 //    @FXML
