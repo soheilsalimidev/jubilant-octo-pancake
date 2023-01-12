@@ -297,24 +297,23 @@ public class HelloController {
             text1.setStyle("-fx-font-weight: bold");
 
             Text text2 = new Text(faz3.getPreOrder());
-            text2.setStyle("-fx-font-weight: regular");
+            text2.setStyle("-fx-font-weight: normal");
 
             Text text3 = new Text("\nin Order \n");
-            text1.setStyle("-fx-font-weight: bold");
+            text3.setStyle("-fx-font-weight: bold");
 
             Text text4 = new Text(faz3.getInOrder());
-            text2.setStyle("-fx-font-weight: regular");
+            text4.setStyle("-fx-font-weight: normal");
 
             Text text5 = new Text("\npost Order \n");
-            text1.setStyle("-fx-font-weight: bold");
+            text5.setStyle("-fx-font-weight: bold");
 
             Text text6 = new Text(faz3.getPostOrder());
-            text2.setStyle("-fx-font-weight: regular");
-
-
+            text6.setStyle("-fx-font-weight: normal");
+            alert.getDialogPane().setMaxWidth(400);
             flow.getChildren().addAll(text1, text2, text3, text4, text5,
                     text6);
-
+            flow.setMaxWidth(400);
             alert.getDialogPane().setContent(flow);
             alert.setResultConverter((ButtonType button) -> null);
             alert.showAndWait();
